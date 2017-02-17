@@ -17,7 +17,8 @@ public class CoffeeController {
     private static List<Coffee> coffeeList = makeCoffee();
 
     private static List<Coffee> makeCoffee() {
-
+        // The data in this class in stubbed for demo purposes,
+        // you should of course not use this in production
         //todo:get coffee from db
 
         List<Coffee> coffeeList = new ArrayList<>();
@@ -62,12 +63,24 @@ public class CoffeeController {
         return coffeeList;
     }
 
+    /**
+     * Get all coffee data
+     * @return A list of {@link Coffee} objects
+     */
     @RequestMapping(method = RequestMethod.GET)
+    //@CrossOrigin is used to prevent CrossOrigin errors when talking to the service from another server,
+    //but will make it possible for everyone to talk to this service, so this should be used carefully
     @CrossOrigin
     public List<Coffee> getCoffee() {
         return coffeeList;
     }
 
+    /**
+     * Get coffee by id
+     *
+     * @param id the coffee id, passed as a path variable in the url, i.e. '/coffee/2'
+     * @return The selected {@link Coffee} object
+     */
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
     @CrossOrigin
     public Coffee getCoffee(@PathVariable Long id) {
@@ -86,6 +99,12 @@ public class CoffeeController {
         return selectedCoffee;
     }
 
+    /**
+     * Add a new coffee
+     * @param newCoffee A new {@link Coffee} object, passed along as the request body (in json)
+     *                  of the POST request
+     * @return The newly created coffee type with an id
+     */
     @RequestMapping(method = RequestMethod.POST)
     @CrossOrigin
     public Coffee addCoffee(@RequestBody Coffee newCoffee) {
@@ -95,6 +114,12 @@ public class CoffeeController {
         return newCoffee;
     }
 
+    /**
+     * Update an existing coffee
+     * @param updatedCoffee The updated {@link Coffee} object,
+     *                      passed along as the request body of the PUT method
+     * @return The updated coffee type
+     */
     @RequestMapping(method = RequestMethod.PUT)
     @CrossOrigin
     public Coffee updateCoffee(@RequestBody Coffee updatedCoffee) {
@@ -111,6 +136,11 @@ public class CoffeeController {
         return updatedCoffee;
     }
 
+    /**
+     * Delete a coffee
+     * @param id The id of the coffee
+     * @return An HttpStatus indicating that the coffee was the deleted successfully
+     */
     @RequestMapping(method = RequestMethod.DELETE, path = "/{id}")
     @CrossOrigin
     public ResponseEntity<?> deleteCoffee(@PathVariable Long id) {
@@ -124,6 +154,10 @@ public class CoffeeController {
     }
 
 
+    /**
+     * This exception is thrown when the coffee cannot be found,
+     * it returns an http status of the type 'not found' to the client
+     */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     class CoffeeNotFoundException extends RuntimeException {
 
